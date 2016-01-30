@@ -79,11 +79,6 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         successfully finished, navigate back to the 'listing.list' state using $state.go(). If an error 
         occurs, pass it to $scope.error. 
        */
-      
-    
-       $stateParams.name=$scope.name;
-       $stateParams.code=$scope.code;
-       $stateParams.address=$scope.address;
 
        $scope.error = null;
        
@@ -96,22 +91,19 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         return false;
       }
 
-      var listing = {
-        name: $stateParams.name, 
-        code: $stateParams.code, 
-        address: $stateParams.address
+        var listing = {
+        name: $scope.name, 
+        code: $scope.code, 
+        address: $scope.address
       };
-      console.log(listing)
 
-      
-      /* Save the article using the Listings factory */
-      Listings.update(listing)
+      Listings.update($stateParams.listingId, listing)
               .then(function(response) {
-                //if the object is successfully saved redirect back to the list page
+                $scope.loading = false;
                 $state.go('listings.list', { successMessage: 'Listing succesfully updated!' });
-              }, function(error) {
-                //otherwise display the error
-                $scope.error = 'Unable to save listing!\n' + error;
+              }, function(error) {  
+                $scope.error = 'Unable to retrieve listing with id "' + id + '"\n' + error;
+                $scope.loading = false;
               });
     };
 
