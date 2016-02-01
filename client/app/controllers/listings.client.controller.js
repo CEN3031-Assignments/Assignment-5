@@ -99,11 +99,9 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
 
       Listings.update($stateParams.listingId, listing)
               .then(function(response) {
-                $scope.loading = false;
                 $state.go('listings.list', { successMessage: 'Listing succesfully updated!' });
               }, function(error) {  
-                $scope.error = 'Unable to retrieve listing with id "' + id + '"\n' + error;
-                $scope.loading = false;
+                $scope.error = 'Unable to save listing!\n' + error;
               });
     };
 
@@ -112,6 +110,13 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         Implement the remove function. If the removal is successful, navigate back to 'listing.list'. Otherwise, 
         display the error. 
        */
+
+      Listings.delete($stateParams.listingId)
+              .then(function(response) {
+                $state.go('listings.list', { successMessage: 'Listing succesfully removed!' });
+              }, function(error) {  
+                $scope.error = 'Unable to remove listing!\n' + error;
+              });
     };
 
     /* Bind the success message to the scope if it exists as part of the current state */
